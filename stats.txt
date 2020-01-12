@@ -1,0 +1,39 @@
+1. First try
+
+Bulk insert of 1,000 at a time
+
+      747.34 real       290.78 user         9.92 sys
+1755426816  maximum resident set size
+         0  average shared memory size
+         0  average unshared data size
+         0  average unshared stack size
+   2833233  page reclaims
+       159  page faults
+         0  swaps
+         0  block input operations
+         0  block output operations
+     15953  messages sent
+      8063  messages received
+         0  signals received
+       925  voluntary context switches
+    585879  involuntary context switches
+
+2. Second try, same code (upsert)
+
+      609.32 real       263.77 user         8.20 sys
+2073264128  maximum resident set size
+         0  average shared memory size
+         0  average unshared data size
+         0  average unshared stack size
+   2745688  page reclaims
+      2127  page faults
+         0  swaps
+         0  block input operations
+         0  block output operations
+     15953  messages sent
+      8063  messages received
+         0  signals received
+      2090  voluntary context switches
+    376616  involuntary context switches
+
+

@@ -5,6 +5,7 @@ from .application_role import ApplicationRole, Status as ApplicationRoleStatus
 from .attachment import Attachment
 from .audit_event import AuditEvent
 from .clin import CLIN, JEDICLINType
+from .crl import CRL
 from .environment import Environment
 from .environment_role import EnvironmentRole, CSPRole
 from .job_failure import EnvironmentJobFailure, EnvironmentRoleJobFailure

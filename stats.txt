@@ -1,4 +1,4 @@
-1. First try
+1. First try, blocks of 1000
 
 Bulk insert of 1,000 at a time
 
@@ -37,3 +37,39 @@ Bulk insert of 1,000 at a time
     376616  involuntary context switches
 
 
+3. Third try, postgres COPY strategy (chunk of 1000), fresh table
+
+      408.62 real       117.52 user         6.94 sys
+1199964160  maximum resident set size
+         0  average shared memory size
+         0  average unshared data size
+         0  average unshared stack size
+   2532274  page reclaims
+         0  page faults
+         0  swaps
+         0  block input operations
+         0  block output operations
+     15905  messages sent
+     15908  messages received
+         0  signals received
+       178  voluntary context switches
+    261670  involuntary context switches
+
+
+4. same as 3, chunks of 10_000
+
+      318.31 real       107.81 user         5.76 sys
+1115926528  maximum resident set size
+         0  average shared memory size
+         0  average unshared data size
+         0  average unshared stack size
+   2588929  page reclaims
+       929  page faults
+         0  swaps
+         0  block input operations
+         0  block output operations
+      7962  messages sent
+      1688  messages received
+         0  signals received
+      2002  voluntary context switches
+    151841  involuntary context switches

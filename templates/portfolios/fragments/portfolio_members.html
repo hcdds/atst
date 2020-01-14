@@ -19,7 +19,7 @@
       </div>
       <base-form inline-template>
         <form id='{{ modal_name }}' method="POST" action="{{ url_for('portfolios.update_member', portfolio_id=portfolio.id, portfolio_role_id=member.role_id) }}">
-          {{ member.form.csrf_token }}
+          {{ member.form.csrf_token(id="csrf_token-update_member-{}".format(loop.index)) }}
           {{ member_form.SubmitStep(
             name=modal_name,
             form=member_form_fields.PermsFields(member.form, member_role_id=member.role_id),
@@ -39,7 +39,7 @@
         </div>
         <base-form inline-template :enable-save="true">
           <form id='{{ resend_invite_modal }}' method="POST" action="{{ url_for('portfolios.resend_invitation', portfolio_id=portfolio.id, portfolio_token=member.invite_token) }}">
-            {{ member.update_invite_form.csrf_token }}
+            {{ member.update_invite_form.csrf_token(id="csrf_token-resend_invite-{}".format(loop.index)) }}
             {{ member_form.SubmitStep(
               name=resend_invite_modal,
               form=member_form_fields.InfoFields(member.update_invite_form.user_data),
@@ -54,7 +54,7 @@
       {% set revoke_invite_modal = "revoke_invite-{}".format(member.role_id) %}
       {% call Modal(name=revoke_invite_modal) %}
         <form method="post" action="{{ url_for('portfolios.revoke_invitation', portfolio_id=portfolio.id, portfolio_token=member.invite_token) }}">
-          {{ member.form.csrf_token }}
+          {{ member.form.csrf_token(id="csrf_token-revoke_invite-{}".format(loop.index)) }}
           <h1>{{ "invites.revoke" | translate }}</h1>
           <hr class="full-width">
           {{ "invites.revoke_modal_text" | translate({"application": portfolio.name}) }}
@@ -78,7 +78,7 @@
         }}
         <div class="action-group">
           <form method="POST" action="{{ url_for('portfolios.remove_member', portfolio_id=portfolio.id, portfolio_role_id=member.role_id)}}">
-            {{ member.form.csrf_token }}
+            {{ member.form.csrf_token(id="csrf_token-remove_member-{}".format(loop.index)) }}
             <button class="usa-button usa-button-danger">
               {{ "portfolios.members.archive_button" | translate }}
             </button>

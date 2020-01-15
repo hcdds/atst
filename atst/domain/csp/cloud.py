@@ -233,6 +233,10 @@ class BillingProfileCSPPayload(
     """
 
 
+class BillingProfileCSPResult(BaseModel):
+    billing_profile_id: str
+
+
 class CloudProviderInterface:
     def root_creds(self) -> Dict:
         raise NotImplementedError()

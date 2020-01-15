@@ -33,6 +33,11 @@ azure-mgmt-authorization = "*"
 azure-mgmt-managementgroups = "*"
 azure-mgmt-resource = "*"
 transitions = "*"
+azure-mgmt-consumption = "*"
+adal = "*"
+graphviz = "*"
+pygraphviz = "*"
+azure-keyvault = "*"
 
 [dev-packages]
 bandit = "*"

@@ -3,8 +3,9 @@ from sqlalchemy.orm import relationship, reconstructor
 from sqlalchemy.dialects.postgresql import UUID
 
 from pydantic import ValidationError as PydanticValidationError
-from transitions import Machine
+#from transitions import Machine
 from transitions.extensions.states import add_state_features, Tags
+from transitions.extensions import GraphMachine
 
 from flask import current_app as app
 
@@ -18,7 +19,7 @@ from atst.models.mixins.state_machines import FSMStates, AzureStages, _build_tra
 
 
 @add_state_features(Tags)
-class StateMachineWithTags(Machine):
+class StateMachineWithTags(GraphMachine):
     pass
 
 
@@ -179,3 +180,6 @@ class PortfolioStateMachine(
     @property
     def application_id(self):
         return None
+
+    def show_graph(self):
+        self.machine.get_graph().draw('my_state_diagram.png', prog='dot')

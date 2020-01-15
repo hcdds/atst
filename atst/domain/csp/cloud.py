@@ -95,6 +95,22 @@ class EnvironmentCreationException(GeneralCSPException):
         )
 
 
+class PortfolioProvisioningException(GeneralCSPException):
+    """Failed to provision a portfolio
+    """
+
+    def __init__(self, portfolio_identifier, reason):
+        self.portfolio_identifier = portfolio_identifier
+        self.reason = reason
+
+    @property
+    def message(self):
+        return "Failed to provision portfolio {}: {}".format(
+            self.user_identifier, self.reason
+        )
+
+
+
 class UserProvisioningException(GeneralCSPException):
     """Failed to provision a user
     """

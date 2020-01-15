@@ -5,6 +5,7 @@ class StageStates(Enum):
     CREATED = "created"
     IN_PROGRESS = "in progress"
     FAILED = "failed"
+    FAILED_DATA_INVALID = "failed"
 
 
 class AzureStages(Enum):
@@ -93,17 +94,24 @@ class FSMMixin:
     ]
 
     system_transitions = [
-        {"trigger": "init", "source": FSMStates.UNSTARTED, "dest": FSMStates.STARTING},
-        {"trigger": "start", "source": FSMStates.STARTING, "dest": FSMStates.STARTED},
-        {"trigger": "reset", "source": "*", "dest": FSMStates.UNSTARTED},
-        {"trigger": "fail", "source": "*", "dest": FSMStates.FAILED,},
+        {'trigger': 'init', 'source': FSMStates.UNSTARTED, 'dest': FSMStates.STARTING,
+            'after': 'after_init'},
+        {'trigger': 'start', 'source': FSMStates.STARTING, 'dest': FSMStates.STARTED},
+        {'trigger': 'reset', 'source': '*', 'dest': FSMStates.UNSTARTED},
+        {'trigger': 'fail', 'source': '*', 'dest': FSMStates.FAILED,}
     ]
 
-    def prepare_init(self, event):
-        pass
-
-    def before_init(self, event):
-        pass
+    def prepare_init(self, event): pass
+    def before_init(self, event): pass
+    def after_init(self, event):
+        #make sure that each stage has corresponding data classes (payload and result)
+        for stage in AzureStages:
+            pass
+            #try:
+            #    _ = get_stage_csp_class(stage.name, "payload")
+            #except:
+                #self.fail_stage()
+            #    import ipdb;ipdb.set_trace()
 
     def after_init(self, event):
         pass

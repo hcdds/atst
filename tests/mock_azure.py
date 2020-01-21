@@ -56,13 +56,15 @@ def mock_policy():
 def mock_adal():
     import adal
 
-    return Mock(spec=adal)
+    return adal
+    # return Mock(spec=adal)
 
 
 def mock_requests():
     import requests
 
-    return Mock(spec=requests)
+    return requests
+    # return Mock(spec=requests)
 
 
 class MockAzureSDK(object):

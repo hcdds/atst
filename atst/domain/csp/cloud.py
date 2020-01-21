@@ -215,7 +215,8 @@ class BillingProfileCLINBudget(AliasModel):
 
 class BillingProfileCSPPayload(BaseCSPPayload):
     tenant_id: str
-    display_name: str
+    billing_profile_display_name: str
+    billing_account_name: str
     enabled_azure_plans: Optional[List[str]]
     address: BillingProfileAddress
 
@@ -228,6 +229,11 @@ class BillingProfileCSPPayload(BaseCSPPayload):
         to rely on a validator to ensure this has an empty value when not specified
         """
         return v or []
+
+    class Config:
+        fields = {
+            "billing_profile_display_name": "displayName"
+        }
 
 
 class BillingProfileCreateCSPResult(AliasModel):
@@ -252,8 +258,13 @@ class BillingInvoiceSection(AliasModel):
 
 class BillingProfileProperties(AliasModel):
     address: BillingProfileAddress
-    display_name: str
+    billing_profile_display_name: str
     invoice_sections: List[BillingInvoiceSection]
+
+    class Config:
+        fields = {
+            "billing_profile_display_name": "displayName"
+        }
 
 
 class BillingProfileCSPResult(AliasModel):
@@ -633,7 +644,7 @@ class MockCloudProvider(CloudProviderInterface):
 
     @property
     def _auth_credentials(self):
-        return {"username": "mock-cloud", "pass": "shh"}
+        return {"username": "mock-cloud", "password": "shh"}
 
     def _authorize(self, credentials):
         self._delay(1, 5)
@@ -778,6 +789,9 @@ class AzureCloudProvider(CloudProviderInterface):
             headers=create_tenant_headers,
         )
 
+        print('create tenant result')
+        print(result.json())
+
         if result.status_code == 200:
             return self._ok(TenantCSPResult(**result.json()))
         else:
@@ -796,9 +810,7 @@ class AzureCloudProvider(CloudProviderInterface):
             "Authorization": f"Bearer {sp_token}",
         }
 
-        # TODO: unsure if this is a static value or needs to be constructed/configurable
-        BILLING_ACCOUT_NAME = "7c89b735-b22b-55c0-ab5a-c624843e8bf6:de4416ce-acc6-44b1-8122-c87c4e903c91_2019-05-31"
-        billing_account_create_url = f"https://management.azure.com/providers/Microsoft.Billing/billingAccounts/{BILLING_ACCOUT_NAME}/billingProfiles?api-version=2019-10-01-preview"
+        billing_account_create_url = f"https://management.azure.com/providers/Microsoft.Billing/billingAccounts/{payload.billing_account_name}/billingProfiles?api-version=2019-10-01-preview"
 
         result = self.sdk.requests.post(
             billing_account_create_url,
@@ -813,6 +825,8 @@ class AzureCloudProvider(CloudProviderInterface):
             # NB: Swagger docs imply call can sometimes resolve immediately
             return self._ok(BillingProfileCSPResult(**result.json()))
         else:
+            print("can't make billing account?")
+            print(result)
             return self._error(result.json())
 
     def validate_billing_profile_created(self, payload: BillingProfileVerifyCSPPayload):
@@ -856,6 +870,7 @@ class AzureCloudProvider(CloudProviderInterface):
         if result.status_code == 201:
             return self._ok(BillingRoleAssignmentCSPResult(**result.json()))
         else:
+            print(result)
             return self._error(result.json())
 
     def enable_task_order_billing(self, payload: EnableTaskOrderBillingCSPPayload):
@@ -887,6 +902,14 @@ class AzureCloudProvider(CloudProviderInterface):
             return self._ok(BillingProfileEnabledCSPResult(**result.json()))
         else:
             return self._error(result.json())
+
+    def get_billing_accounts(self, creds):
+        sp_token = self._get_sp_token(creds)
+        auth_header = {
+            "Authorization": f"Bearer {sp_token}",
+        }
+        return self.sdk.requests.get("https://management.azure.com/providers/Microsoft.Billing/billingAccounts/52865e4c-52e8-5a6c-da6b-c58f0814f06f:7ea5de9d-b8ce-4901-b1c5-d864320c7b03_2019-05-31/operationResults/createBillingProfile_cce2567e-e9c8-4598-8912-aa07635a09e1?api-version=2019-10-01-preview", headers=auth_header)
+
 
     def validate_task_order_billing_enabled(self, payload: VerifyTaskOrderBillingCSPPayload):
         sp_token = self._get_sp_token(payload.creds)

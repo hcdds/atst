@@ -43,3 +43,30 @@ resource "azurerm_postgresql_database" "db" {
   charset             = "UTF8"
   collation           = "en_US.utf8"
 }
+
+provider "postgresql" {
+  version  = "=1.4.0"
+  alias    = "atat_db"
+  host     = azurerm_postgresql_server.sql.fqdn
+  port     = 5432
+  username = "${var.administrator_login}@${azurerm_postgresql_server.sql.fqdn}"
+  password = var.administrator_login_password
+  sslmode  = "require"
+}
+
+resource "postgresql_role" "atat_role" {
+  provider = postgresql.atat_db
+  name     = var.user_login
+  login    = true
+  password = var.user_login_password
+
+  depends_on = [azurerm_postgresql_server.sql]
+}
+
+resource "postgresql_grant" "atat_grant" {
+  database    = azurerm_postgresql_database.db.name
+  role        = var.user_login
+  schema      = "public"
+  object_type = "table"
+  privileges  = ["ALL"]
+}

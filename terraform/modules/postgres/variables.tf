@@ -94,3 +94,13 @@ variable "ssl_enforcement" {
   default     = "Enabled"
 }
 
+variable "user_login" {
+  type        = string
+  description = "Database user login"
+  default     = "atat"
+}
+
+variable "user_login_password" {
+  type        = string
+  description = "Database user login password"
+}

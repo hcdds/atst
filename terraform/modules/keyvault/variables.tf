@@ -32,3 +32,14 @@ variable "admin_principals" {
   type        = map
   description = "A list of user principals who need access to manage the keyvault"
 }
+
+variable "secret_pgpassword_name" {
+  type        = string
+  description = "The name for the Key Vault secret for the password for the ATAT database user."
+  default     = "PGPASSWORD"
+}
+
+variable "secret_pgpassword_value" {
+  type        = string
+  description = "The value for the Key Vault secret for the password for the ATAT database user."
+}

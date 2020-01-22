@@ -70,3 +70,9 @@ resource "azurerm_key_vault_access_policy" "keyvault_admin_policy" {
     "update",
   ]
 }
+
+resource "azurerm_key_vault_secret" "secret-pgpassword" {
+  name         = var.secret_pgpassword_name
+  value        = var.secret_pgpassword_value
+  key_vault_id = azurerm_key_vault.keyvault.id
+}

@@ -12,6 +12,7 @@ SETTINGS=(
   MAIN_DOMAIN
   AUTH_DOMAIN
   VMSS_CLIENT_ID
+  TENANT_ID
 )
 
 # Loop all expected settings. Track ones that are missing and build

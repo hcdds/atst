@@ -11,9 +11,6 @@ SETTINGS=(
   PORT_PREFIX
   MAIN_DOMAIN
   AUTH_DOMAIN
-  KV_MI_ID
-  KV_MI_CLIENT_ID
-  TENANT_ID
 )
 
 # Loop all expected settings. Track ones that are missing and build

@@ -38,9 +38,8 @@ spec:
               flexVolume:
                 driver: "azure/kv"
                 options:
-                  usepodidentity: "true"
+                  usevmmanagedidentity: "true"
                   keyvaultname: "atat-vault-test"
                   keyvaultobjectnames: "staging-AZURE-STORAGE-KEY;staging-MAIL-PASSWORD;staging-PGPASSWORD;staging-REDIS-PASSWORD;staging-SECRET-KEY"
                   keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"
                   keyvaultobjecttypes: "secret;secret;secret;secret;key"
-                  tenantid: $TENANT_ID

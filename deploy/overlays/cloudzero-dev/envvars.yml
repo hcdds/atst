@@ -5,18 +5,25 @@ metadata:
   name: atst-worker-envvars
 data:
   CELERY_DEFAULT_QUEUE: celery-staging
-  SERVER_NAME: staging.atat.code.mil
   FLASK_ENV: staging
+  PGDATABASE: cloudzero_jedidev_atat
+  PGHOST: cloudzero-jedidev-sql.postgres.database.azure.com
+  PGUSER: atat
+  REDIS_HOST: cloudzero-jedidev-redis.redis.cache.windows.net:6380
+  SERVER_NAME: dev.atat.cloud.mil
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: atst-envvars
 data:
-  ASSETS_URL: https://atat-cdn-staging.azureedge.net/
+  ASSETS_URL: https://cloudzero-jedidev-67f1e6a8ea842922.azureedge.net
   CDN_ORIGIN: https://staging.atat.code.mil
   CELERY_DEFAULT_QUEUE: celery-staging
   FLASK_ENV: staging
-  STATIC_URL: https://atat-cdn-staging.azureedge.net/static/
-  PGHOST: cloudzero-dev-sql.postgres.database.azure.com
-  REDIS_HOST: cloudzero-dev-redis.redis.cache.windows.net:6380
+  PGDATABASE: cloudzero_jedidev_atat
+  PGHOST: cloudzero-jedidev-sql.postgres.database.azure.com
+  PGUSER: atat
+  REDIS_HOST: cloudzero-jedidev-redis.redis.cache.windows.net:6380
+  SESSION_COOKIE_DOMAIN: atat.cloud.mil
+  STATIC_URL: https://cloudzero-jedidev-67f1e6a8ea842922.azureedge.net/static/

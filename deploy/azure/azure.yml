@@ -147,22 +147,20 @@ spec:
           flexVolume:
             driver: "azure/kv"
             options:
-              usepodidentity: "true"
+              usevmmanagedidentity: "true"
               keyvaultname: "atat-vault-test"
               keyvaultobjectnames: "dhparam4096;master-cert;master-cert"
               keyvaultobjectaliases: "dhparam.pem;atat.key;atat.crt"
               keyvaultobjecttypes: "secret;secret;secret"
-              tenantid: $TENANT_ID
         - name: flask-secret
           flexVolume:
             driver: "azure/kv"
             options:
-              usepodidentity: "true"
+              usevmmanagedidentity: "true"
               keyvaultname: "atat-vault-test"
               keyvaultobjectnames: "master-AZURE-STORAGE-KEY;master-MAIL-PASSWORD;master-PGPASSWORD;master-REDIS-PASSWORD;master-SECRET-KEY"
               keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"
               keyvaultobjecttypes: "secret;secret;secret;secret;key"
-              tenantid: $TENANT_ID
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -228,12 +226,11 @@ spec:
           flexVolume:
             driver: "azure/kv"
             options:
-              usepodidentity: "true"
+              usevmmanagedidentity: "true"
               keyvaultname: "atat-vault-test"
               keyvaultobjectnames: "master-AZURE-STORAGE-KEY;master-MAIL-PASSWORD;master-PGPASSWORD;master-REDIS-PASSWORD;master-SECRET-KEY"
               keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"
               keyvaultobjecttypes: "secret;secret;secret;secret;key"
-              tenantid: $TENANT_ID
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -300,12 +297,11 @@ spec:
           flexVolume:
             driver: "azure/kv"
             options:
-              usepodidentity: "true"
+              usevmmanagedidentity: "true"
               keyvaultname: "atat-vault-test"
               keyvaultobjectnames: "master-AZURE-STORAGE-KEY;master-MAIL-PASSWORD;master-PGPASSWORD;master-REDIS-PASSWORD;master-SECRET-KEY"
               keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"
               keyvaultobjecttypes: "secret;secret;secret;secret;key"
-              tenantid: $TENANT_ID
 ---
 apiVersion: v1
 kind: Service

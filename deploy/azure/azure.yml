@@ -148,6 +148,7 @@ spec:
             driver: "azure/kv"
             options:
               usevmmanagedidentity: "true"
+              vmmanagedidentityclientid: $VMSS_CLIENT_ID
               keyvaultname: "atat-vault-test"
               keyvaultobjectnames: "dhparam4096;master-cert;master-cert"
               keyvaultobjectaliases: "dhparam.pem;atat.key;atat.crt"
@@ -157,6 +158,7 @@ spec:
             driver: "azure/kv"
             options:
               usevmmanagedidentity: "true"
+              vmmanagedidentityclientid: $VMSS_CLIENT_ID
               keyvaultname: "atat-vault-test"
               keyvaultobjectnames: "master-AZURE-STORAGE-KEY;master-MAIL-PASSWORD;master-PGPASSWORD;master-REDIS-PASSWORD;master-SECRET-KEY"
               keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"
@@ -227,6 +229,7 @@ spec:
             driver: "azure/kv"
             options:
               usevmmanagedidentity: "true"
+              vmmanagedidentityclientid: $VMSS_CLIENT_ID
               keyvaultname: "atat-vault-test"
               keyvaultobjectnames: "master-AZURE-STORAGE-KEY;master-MAIL-PASSWORD;master-PGPASSWORD;master-REDIS-PASSWORD;master-SECRET-KEY"
               keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"
@@ -298,6 +301,7 @@ spec:
             driver: "azure/kv"
             options:
               usevmmanagedidentity: "true"
+              vmmanagedidentityclientid: $VMSS_CLIENT_ID
               keyvaultname: "atat-vault-test"
               keyvaultobjectnames: "master-AZURE-STORAGE-KEY;master-MAIL-PASSWORD;master-PGPASSWORD;master-REDIS-PASSWORD;master-SECRET-KEY"
               keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"

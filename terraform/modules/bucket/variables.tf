@@ -46,3 +46,8 @@ variable "whitelist" {
   description = "A map of whitelisted IPs and CIDR ranges. For single IPs, Azure expects just the IP, NOT a /32."
   default     = {}
 }
+
+variable "custom_emails" {
+  type        = string
+  description = "email alerting SEC-Ops"
+}

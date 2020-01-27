@@ -10,7 +10,11 @@ resource "azurerm_storage_account" "bucket" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
-
+resource "azurerm_storage_container" "bucket" {
+  name                  = "content"
+  storage_account_name  = azurerm_storage_account.bucket.name
+  container_access_type = var.container_access_type
+}
 resource "azurerm_storage_account_network_rules" "acls" {
   resource_group_name  = azurerm_resource_group.bucket.name
   storage_account_name = azurerm_storage_account.bucket.name
@@ -25,8 +29,27 @@ resource "azurerm_storage_account_network_rules" "acls" {
   bypass                     = ["AzureServices"]
 }
 
-resource "azurerm_storage_container" "bucket" {
-  name                  = "content"
-  storage_account_name  = azurerm_storage_account.bucket.name
-  container_access_type = var.container_access_type
-}
+##alert rule tag on the the storage module 
+resource "azurerm_metric_alertrule" "storage" {
+  name                = "${var.service_name}-storage"
+  resource_group_name = "${azurerm_resource_group.bucket.name}"
+  location            = "${azurerm_resource_group.bucket.location}"
+
+  description = "An alert rule to watch the metric Storage"
+
+  enabled = true
+
+  resource_id = "$(azurerm_storage_).id}"
+  metric_name = "storage"
+  operator    = "GreaterThan"
+  threshold   = 1649267441664
+  aggregation = "Maximum"
+  period      = "PT10M"
+
+  email_action {
+    send_to_service_owners = false
+
+    custom_emails = [
+      "${var.custom_emails}", # add email 
+    ]
+  }

@@ -56,6 +56,9 @@ class PortfolioStateMachine(
     portfolio_id = Column(UUID(as_uuid=True), ForeignKey("portfolios.id"),)
     portfolio = relationship("Portfolio", back_populates="state_machine")
 
+    # In order to extend the entries in the Enum the created alembic migration 
+    #
+    # https://alembic.sqlalchemy.org/en/latest/api/runtime.html#alembic.runtime.environment.EnvironmentContext.configure.params.compare_type
     state = Column(
         SQLAEnum(FSMStates, native_enum=False, create_constraint=False),
         default=FSMStates.UNSTARTED,

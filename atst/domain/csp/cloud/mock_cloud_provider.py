@@ -374,8 +374,9 @@ class MockCloudProvider(CloudProviderInterface):
     def create_application(self, payload: ApplicationCSPPayload):
         self._maybe_raise(self.UNAUTHORIZED_RATE, GeneralCSPException)
 
-        id_ = f"{AZURE_MGMNT_PATH}{payload.management_group_name}"
-        return ApplicationCSPResult(id=id_)
+        return ApplicationCSPResult(
+            id=f"{AZURE_MGMNT_PATH}{payload.management_group_name}"
+        )
 
     def get_credentials(self, scope="portfolio", tenant_id=None):
         return self.root_creds()

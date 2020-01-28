@@ -1,3 +1,4 @@
+import json
 import re
 from secrets import token_urlsafe
 from typing import Dict
@@ -16,6 +17,7 @@ from .models import (
     BillingProfileTenantAccessCSPResult,
     BillingProfileVerificationCSPPayload,
     BillingProfileVerificationCSPResult,
+    KeyVaultCredentials,
     ManagementGroupCSPResponse,
     ProductPurchaseCSPPayload,
     ProductPurchaseCSPResult,
@@ -89,7 +91,7 @@ class AzureCloudProvider(CloudProviderInterface):
 
     def set_secret(self, secret_key, secret_value):
         credential = self._get_client_secret_credential_obj({})
-        secret_client = self.secrets.SecretClient(
+        secret_client = self.sdk.secrets.SecretClient(
             vault_url=self.vault_url, credential=credential,
         )
         try:
@@ -102,7 +104,7 @@ class AzureCloudProvider(CloudProviderInterface):
 
     def get_secret(self, secret_key):
         credential = self._get_client_secret_credential_obj({})
-        secret_client = self.secrets.SecretClient(
+        secret_client = self.sdk.secrets.SecretClient(
             vault_url=self.vault_url, credential=credential,
         )
         try:
@@ -170,8 +172,15 @@ class AzureCloudProvider(CloudProviderInterface):
         }
 
     def create_application(self, payload: ApplicationCSPPayload):
-        creds = payload.creds
-        credentials = self._get_credential_obj(creds, resource=AZURE_MANAGEMENT_API)
+        creds = self._source_creds(payload.tenant_id)
+        credentials = self._get_credential_obj(
+            {
+                "client_id": creds.root_sp_client_id,
+                "secret_key": creds.root_sp_key,
+                "tenant_id": creds.root_tenant_id,
+            },
+            resource=AZURE_MANAGEMENT_API,
+        )
 
         response = self._create_management_group(
             credentials,
@@ -694,26 +703,16 @@ class AzureCloudProvider(CloudProviderInterface):
             "tenant_id": self.tenant_id,
         }
 
-    def get_credentials(self, scope="portfolio", tenant_id=None):
-        """
-        This could be implemented to determine, based on type, whether to return creds for:
-            - scope="atat": the ATAT main app registration in ATAT's home tenant
-            - scope="tenantadmin": the tenant administrator credentials
-            - scope="portfolio": the credentials for the ATAT SP in the portfolio tenant
-        """
-        if scope == "atat":
-            return self._root_creds
-        elif scope == "tenantadmin":
-            # magic with key vault happens
-            return {
-                "client_id": "some id",
-                "secret_key": "very secret",
-                "tenant_id": tenant_id,
-            }
-        elif scope == "portfolio":
-            # magic with key vault happens
-            return {
-                "client_id": "some id",
-                "secret_key": "very secret",
-                "tenant_id": tenant_id,
-            }
+    def _source_creds(self, tenant_id=None) -> KeyVaultCredentials:
+        if tenant_id:
+            return self._source_tenant_creds(tenant_id)
+        else:
+            return KeyVaultCredentials(
+                root_tenant_id=self._root_creds.get("tenant_id"),
+                root_sp_client_id=self._root_creds.get("client_id"),
+                root_sp_key=self._root_creds.get("secret_key"),
+            )
+
+    def _source_tenant_creds(self, tenant_id):
+        raw_creds = self.get_secret(tenant_id)
+        return KeyVaultCredentials(**json.loads(raw_creds))

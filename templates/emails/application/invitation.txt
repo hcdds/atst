@@ -3,8 +3,8 @@
 {% block content %}
 
 Join this JEDI Cloud Application
-{{ owner }} has invited you to join a JEDI Cloud Application. Login now to view or use your JEDI Cloud resources.
+{{ owner | e }} has invited you to join a JEDI Cloud Application. Login now to view or use your JEDI Cloud resources.
 
-{{ url_for("applications.accept_invitation", token=token, _external=True) }}
+{{ url_for("applications.accept_invitation", token=token, _external=True) | e }}
 
 {% endblock %}

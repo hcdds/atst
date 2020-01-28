@@ -4,6 +4,6 @@
 
 A JEDI environment you set up is now available. Please click the link below to access your JEDI application.
 
-{{ url_for("applications.settings", application_id=environment.application_id, _external=True) }}
+{{ url_for("applications.settings", application_id=environment.application_id, _external=True) | e }}
 
 {% endblock %}

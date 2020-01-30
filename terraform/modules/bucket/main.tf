@@ -39,7 +39,7 @@ resource "azurerm_metric_alertrule" "storage" {
 
   enabled = true
 
-  resource_id = "$(azurerm_storage_).id}"
+  resource_id = "$(azurerm_storage_bucket.bucket.id}"
   metric_name = "storage"
   operator    = "GreaterThan"
   threshold   = 1649267441664
